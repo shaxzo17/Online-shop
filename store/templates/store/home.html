@@ -1,0 +1,209 @@
+<!-- store/templates/home.html -->
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bosh sahifa — Pink & Bantikcha</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --pink-50:#fff5f9; --pink-100:#ffe6f0; --pink-200:#ffcfe1; --pink-300:#ffb0cc;
+      --pink-400:#ff8fba; --pink-500:#ff6aa8; --pink-600:#ff4d98; --pink-700:#e33884;
+      --pink-800:#c1276f; --pink-900:#9a1f5a; --ink:#1f1f28; --muted:#6b6b7a;
+      --white:#ffffff; --shadow:0 10px 30px rgba(255,105,180,.25);
+      --card: linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.65));
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Poppins, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 600px at 20% -10%, rgba(255,192,203,.35), transparent 60%),
+        radial-gradient(1000px 500px at 100% 0%, rgba(255,182,193,.35), transparent 60%),
+        linear-gradient(120deg, var(--pink-50), #fff);
+      overflow-x:hidden;
+    }
+    .container{max-width:1200px;margin:0 auto;padding:24px}
+
+    /* NAV */
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:700;font-size:22px ; color:pink }
+    .brand .logo{width:36px;height:36px}
+    .pill{display:inline-flex;align-items:center;gap:8px;background:var(--card);backdrop-filter: blur(10px);
+      border:1px solid var(--pink-200);padding:8px 14px;border-radius:999px;box-shadow:var(--shadow)}
+    .nav-actions{display:flex;align-items:center;gap:10px}
+    .ghost-btn{border:none;background:transparent;padding:10px 14px;border-radius:999px;cursor:pointer}
+    .ghost-btn:hover{background:var(--pink-100)}
+
+    /* HERO */
+    .hero{display:grid;grid-template-columns:1.2fr .8fr;align-items:center;gap:24px;margin-top:28px}
+    .card{background:var(--card);border:1px solid var(--pink-200);border-radius:28px;box-shadow:var(--shadow);padding:28px}
+    .hero h1{font-size:clamp(28px,4vw,44px);line-height:1.1;margin:0 0 10px}
+    .hero p{margin:0 0 22px;color:var(--muted)}
+    .cta{display:flex;gap:12px;align-items:center}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 18px;border-radius:16px;
+      font-weight:700;text-decoration:none;border:2px solid var(--pink-500);box-shadow:var(--shadow);
+      background:linear-gradient(180deg, var(--pink-500), var(--pink-600));color:#fff;transition:transform .15s ease, filter .2s}
+    .btn:hover{transform:translateY(-2px);filter:brightness(1.02)}
+    .btn:active{transform:translateY(0)}
+    .subbtn{border:2px solid var(--pink-300);background:var(--white);color:var(--pink-700);font-weight:600}
+
+    .hero-visual{position:relative;min-height:320px}
+    .blob{position:absolute;inset:0;border-radius:32px;background:
+        radial-gradient(160px 120px at 20% 30%, rgba(255,255,255,.9), transparent 60%),
+        radial-gradient(220px 160px at 80% 70%, rgba(255,255,255,.9), transparent 60%),
+        linear-gradient(145deg, var(--pink-100), var(--pink-300));
+      border:1px solid var(--pink-200);box-shadow:var(--shadow)}
+
+    /* Floating bows */
+    .bow{position:absolute;opacity:.9;animation:float 12s ease-in-out infinite}
+    .bow svg{filter:drop-shadow(0 8px 12px rgba(255,105,180,.25))}
+    .bow.b1{top:-18px;left:-18px;animation-delay:0s}
+    .bow.b2{bottom:-14px;right:-12px;animation-delay:2.2s}
+    .bow.b3{top:30%;right:-18px;animation-delay:1s}
+    @keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-10px) rotate(2deg)}}
+
+    /* FEATURE GRID */
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px}
+    .feature{position:relative;overflow:hidden}
+    .feature .badge{position:absolute;top:12px;left:12px}
+    .badge{background:var(--pink-600);color:#fff;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700}
+    .feature h3{margin:10px 0 6px;font-size:18px}
+    .feature p{margin:0;color:var(--muted);font-size:14px}
+    .feature .art{height:150px;border-radius:16px;background:
+      linear-gradient(135deg, var(--pink-100), var(--pink-300));border:1px solid var(--pink-200);
+      display:flex;align-items:center;justify-content:center}
+    .feature:hover{transform:translateY(-3px)}
+    .feature{transition:transform .2s ease}
+
+    /* FOOTER */
+    footer{margin:40px 0 10px;color:var(--muted);text-align:center;font-size:14px}
+
+    /* Responsive */
+    @media (max-width:960px){
+      .hero{grid-template-columns:1fr}
+      .hero-visual{min-height:260px}
+      .grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:640px){
+      .grid{grid-template-columns:1fr}
+      .nav{flex-wrap:wrap;gap:8px}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- NAVBAR -->
+    <div class="nav">
+      <div class="brand pill" aria-label="Brend">
+          <span>Pink Shop</span>
+      </div>
+      <div class="nav-actions">
+        <!-- Ushbu tugmalar faqat UI uchun; sahifadan chiqmaydi -->
+        <button class="ghost-btn" id="likeBtn" aria-label="Yoqdi">❤️</button>
+        <button class="ghost-btn" id="sparkleBtn" aria-label="Yulduzcha">✨</button>
+      </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="card">
+        <div class="pill" style="margin-bottom:10px">Assalomu alaykum! 👋</div>
+        <h1>Iliq va <span style="color:var(--pink-700)">bantikcha</span> uslubidagi online do‘kon</h1>
+        <p>Siz uchun shirin dizayn, yumshoq soyalar va qulay navigatsiya. Keling, toifalarni ko‘rib chiqamiz! 💖</p>
+        <div class="cta">
+          <!-- Faqat mana bu link real yo‘lga olib boradi -->
+          <a class="btn" href="/categories/" aria-label="Internet magazin toifalari">🛍️ Internet magazin</a>
+          <button class="btn subbtn" id="previewBtn" type="button">Namuna ko‘rish</button>
+        </div>
+      </div>
+      <div class="hero-visual card">
+        <div class="blob"></div>
+        <!-- Dekorativ bantikchalar -->
+        <div class="bow b1" aria-hidden="true">"+'<?xml version="1.0" encoding="UTF-8"?>'+"<svg width="74" height="56" viewBox="0 0 74 56" xmlns="http://www.w3.org/2000/svg"><path d="M37 26c6-10 12-14 20-11s5 14-5 15c10 1 12 13 5 16s-14-1-20-11c-6 10-12 14-20 11S12 30 22 29C12 28 10 16 17 13s14 1 20 13Z" fill="#ff8fba"/></svg></div>
+        <div class="bow b2" aria-hidden="true">"+'<?xml version="1.0" encoding="UTF-8"?>'+"<svg width="64" height="48" viewBox="0 0 64 48" xmlns="http://www.w3.org/2000/svg"><path d="M32 22c5-8 10-11 17-9 7 3 4 12-4 12 8 1 10 10 4 13-6 3-12-1-17-9-5 8-11 12-17 9S8 27 16 26C8 25 6 16 12 13s12 1 20 9Z" fill="#ff6aa8"/></svg></div>
+        <div class="bow b3" aria-hidden="true">"+'<?xml version="1.0" encoding="UTF-8"?>'+"<svg width="58" height="42" viewBox="0 0 58 42" xmlns="http://www.w3.org/2000/svg"><path d="M29 20c4-7 9-9 14-7s3 9-4 9c7 0 8 9 4 11-4 2-10 0-14-7-4 7-10 9-14 7s-3-11 4-11c-7 0-8-8-4-10 4-2 10 0 14 8Z" fill="#ffb0cc"/></svg></div>
+      </div>
+    </section>
+
+    <!-- FEATURES / MINI-KATALOG -->
+    <section class="grid" aria-label="Yangi kelganlar">
+      <article class="feature card" tabindex="0">
+        <span class="badge">Yangi</span>
+        <div class="art" aria-hidden="true">"+'<?xml version="1.0" encoding="UTF-8"?>'+"<svg width="120" height="90" viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg"><g><rect x="10" y="15" width="100" height="60" rx="14" fill="#ffe6f0" stroke="#ffcfe1"/><circle cx="60" cy="45" r="16" fill="#ff8fba"/><rect x="50" y="37" width="20" height="16" rx="8" fill="#fff"/></g></svg></div>
+        <h3>Pastel aksessuarlar</h3>
+        <p>Yurakchali, bantik dizaynli bezaklar.</p>
+      </article>
+      <article class="feature card" tabindex="0">
+        <span class="badge">Trend</span>
+        <div class="art" aria-hidden="true">"+'<?xml version="1.0" encoding="UTF-8"?>'+"<svg width="120" height="90" viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg"><g><rect x="15" y="20" width="90" height="50" rx="12" fill="#ffe6f0" stroke="#ffcfe1"/><path d="M30 55c12-20 48-20 60 0" stroke="#ff6aa8" stroke-width="6" fill="none" stroke-linecap="round"/></g></svg></div>
+        <h3>Bantikcha kolleksiyasi</h3>
+        <p>Har xil o‘lcham va teksturalar.</p>
+      </article>
+      <article class="feature card" tabindex="0">
+        <span class="badge">Chegirma</span>
+        <div class="art" aria-hidden="true">"+'<?xml version="1.0" encoding="UTF-8"?>'+"<svg width="120" height="90" viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg"><g><rect x="18" y="18" width="84" height="54" rx="12" fill="#ffe6f0" stroke="#ffcfe1"/><text x="60" y="52" text-anchor="middle" font-size="28" fill="#ff4d98" font-family="Poppins, Arial">-30%</text></g></svg></div>
+        <h3>Maxsus takliflar</h3>
+        <p>Haftalik promo va bonuslar.</p>
+      </article>
+    </section>
+
+    <footer>© <span id="y"></span> Pink Shop — mehr va dizayn bir sahifada 💗</footer>
+  </div>
+
+  <script>
+    // Yilni avtomatik yangilash
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Namuna ko‘rish: kichik animatsion konfetti (sahifadan chiqmaydi)
+    const btn = document.getElementById('previewBtn');
+    const sparkleBtn = document.getElementById('sparkleBtn');
+    const likeBtn = document.getElementById('likeBtn');
+
+    function confetti(x, y){
+      for(let i=0;i<16;i++){
+        const s = document.createElement('span');
+        s.className='confetti';
+        s.style.position='fixed';
+        s.style.left=x+'px'; s.style.top=y+'px';
+        s.style.width=s.style.height=Math.random()*8+4+'px';
+        s.style.background=['#ff6aa8','#ff8fba','#ffcfe1','#ffe6f0'][Math.floor(Math.random()*4)];
+        s.style.borderRadius='4px';
+        s.style.transform=`translate(${(Math.random()-0.5)*100}px, ${(Math.random()-0.5)*120}px) rotate(${Math.random()*360}deg)`;
+        s.style.transition='all .9s cubic-bezier(.2,.6,.2,1)';
+        s.style.opacity='1';
+        document.body.appendChild(s);
+        requestAnimationFrame(()=>{
+          s.style.opacity='0';
+        });
+        setTimeout(()=>s.remove(), 950);
+      }
+    }
+
+    btn?.addEventListener('click', (e)=>{
+      const r = btn.getBoundingClientRect();
+      confetti(r.left + r.width/2, r.top + window.scrollY);
+      btn.textContent = 'Yoqdi ✨';
+      setTimeout(()=> btn.textContent = 'Namuna ko‘rish', 1200);
+    });
+    sparkleBtn?.addEventListener('click', (e)=>{
+      confetti(e.clientX, e.clientY);
+    });
+    likeBtn?.addEventListener('click', ()=>{
+      likeBtn.textContent = '💗';
+      likeBtn.style.transform='scale(1.1)';
+      setTimeout(()=> likeBtn.style.transform='scale(1)', 180);
+    });
+
+    // Klaviatura bilan kartalarni fokusda yengil "ko‘tarish"
+    document.querySelectorAll('.feature').forEach(el=>{
+      el.addEventListener('focus', ()=> el.style.transform='translateY(-3px)');
+      el.addEventListener('blur', ()=> el.style.transform='translateY(0)');
+    });
+  </script>
+</body>
+</html>

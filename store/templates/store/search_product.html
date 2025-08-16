@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Products</title>
+</head>
+<body>
+    <h1>Search Products</h1>
+    <form method="get" action="{% url 'product_search' %}">
+        <input type="text" name="query" placeholder="Search for a product">
+        <button type="submit">Search</button>
+    </form>
+    
+    {% if products %}
+        <ul>
+            {% for product in products %}
+                <li>{{ product.name }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>

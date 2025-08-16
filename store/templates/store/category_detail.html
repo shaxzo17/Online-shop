@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ category.name }} - Mahsulotlar</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffe6f0, #ffd6eb);
+            margin: 0;
+            padding: 20px;
+        }
+        h2 {
+            text-align: center;
+            color: #e83e8c;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+        }
+        .card {
+            width: 260px;
+            background: #fff;
+            border-radius: 16px;
+            padding: 15px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+        .card h3 {
+            margin: 10px 0;
+            color: #e83e8c;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .card p {
+            margin: 6px 0;
+            color: #555;
+        }
+        .card form button {
+            margin-top: 12px;
+            width: 100%;
+            padding: 10px;
+            background: #e83e8c;
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .card form button:hover {
+            background: #d63384;
+            transform: scale(1.05);
+        }
+
+        /* Toast */
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            background: #e83e8c;
+            color: white;
+            padding: 12px 20px;
+                border-radius: 25px;
+                margin-bottom: 10px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                font-weight: bold;
+                animation: slideIn 0.4s ease;
+            }
+
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            .back-btn {
+                display: inline-block;
+                margin: 20px 0;
+                padding: 10px 18px;
+                background: linear-gradient(135deg, #ff85b3, #ff5f9e);
+                color: white;
+                font-weight: 600;
+                border-radius: 30px;
+                text-decoration: none;
+                box-shadow: 0 4px 10px rgba(255, 100, 150, 0.4);
+                transition: all 0.3s ease;
+            }
+            .back-btn:hover {
+                background: linear-gradient(135deg, #ff5f9e, #ff85b3);
+                transform: translateY(-3px);
+                box-shadow: 0 6px 15px rgba(255, 100, 150, 0.6);
+            }
+    </style>
+</head>
+<body>
+
+{% if messages %}
+  <div id="toast-container">
+    {% for message in messages %}
+      <div class="toast {{ message.tags }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<h2>{{ category.name }} - Mahsulotlar</h2>
+
+<div class="card-container">
+    {% for product in products %}
+        <div class="card">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% endif %}
+            <h3>{{ product.name }}</h3>
+            <p>Narxi: <b>{{ product.price }} so'm</b></p>
+
+            <form action="{% url 'store:add_to_cart' product.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit">🛒 Savatga qo‘shish</button>
+            </form>
+        </div>
+    {% empty %}
+        <p>Bu kategoriyada mahsulotlar yo‘q.</p>
+    {% endfor %}
+</div>
+
+<!-- Ortga tugma (sayohat qilish uchun) -->
+<<a href="/categories/" class="back-btn">
+    ⬅️ Ortga
+</a>
+
+
+
+<script>
+  setTimeout(function() {
+    const toast = document.getElementById('toast-container');
+    if (toast) {
+      toast.style.display = 'none';
+    }
+  }, 3000);
+</script>
+
+</body>
+</html>

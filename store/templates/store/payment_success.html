@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pul O'tkazma Sayti</title>
+    <link rel="stylesheet" href="{% static 'store/style.css' %}">
+    <style>
+        #transactionDetails {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        .big-amount {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 10px 0;
+            color: green;
+        }
+        .success-text {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h1>Pul O'tkazish</h1>
+        <form id="transferForm">
+            <label for="senderCard">Pul o'tkazmoqchi bo'lgan karta raqami:</label>
+            <input type="text" id="senderCard" name="senderCard" required maxlength="19" placeholder="1234 5678 9012 3456" oninput="formatCardNumber(this)">
+
+            <label for="senderName">Yuboruvchi ismi, familiyasi, sharifi:</label>
+            <input type="text" id="senderName" name="senderName" required placeholder="Ismi Familiyasi Sharifi">
+
+            <label for="receiverCard">Qabul qiluvchi karta raqami:</label>
+            <input type="text" id="receiverCard" name="receiverCard" required maxlength="19" placeholder="1234 5678 9012 3456" oninput="formatCardNumber(this)">
+
+            <label for="receiverName">Qabul qiluvchi ismi, familiyasi, sharifi:</label>
+            <input type="text" id="receiverName" name="receiverName" required placeholder="Ismi Familiyasi Sharifi">
+
+            <label for="amount">O'tkazmoqchi bo'lgan summa (so'm):</label>
+            <input type="number" id="amount" name="amount" required>
+
+            <button type="submit">O'tkazish</button>
+        </form>
+
+        <div id="result" class="result" style="display: none; margin-top: 20px;">
+            <h2>O'tkazma tafsilotlari</h2>
+            <p id="transactionDetails"></p>
+            <button id="confirmBtn" type="button">Buyurtmani tasdiqlash!</button>
+        </div>
+    </div>
+
+    <script>
+        function formatCardNumber(input) {
+            var value = input.value.replace(/\D/g, '');
+            value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+            input.value = value.slice(0, 19);
+        }
+
+        document.getElementById('transferForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            var senderCard = document.getElementById('senderCard').value.trim();
+            var senderName = document.getElementById('senderName').value.trim();
+            var receiverCard = document.getElementById('receiverCard').value.trim();
+            var receiverName = document.getElementById('receiverName').value.trim();
+            var amount = parseFloat(document.getElementById('amount').value);
+
+            if (isNaN(amount) || amount <= 0) {
+                alert("Iltimos, to'g'ri summa kiriting.");
+                return;
+            }
+
+            var commission = amount * 0.02;
+            var totalAmount = amount + commission;
+            var now = new Date();
+            var formattedDate = now.toLocaleString('uz-UZ');
+            var maskedSenderCard = '**** **** **** ' + senderCard.slice(-4);
+            var maskedReceiverCard = '**** **** **** ' + receiverCard.slice(-4);
+
+            var transactionDetails = `
+                <div class="big-amount">${amount.toFixed(2)} so'm</div>
+                <div><strong>O'tkazilgan vaqti:</strong> ${formattedDate}</div>
+                <div class="success-text">Operatsiya bajarildi</div>
+                <hr>
+                <div><strong>Yuboruvchi karta:</strong> ${maskedSenderCard}</div>
+                <div><strong>Yuboruvchi:</strong> ${senderName}</div>
+                <div><strong>Qabul qiluvchi karta:</strong> ${maskedReceiverCard}</div>
+                <div><strong>Qabul qiluvchi:</strong> ${receiverName}</div>
+                <div><strong>Qabul qiluvchiga o'tkaziladigan summa:</strong> ${amount.toFixed(2)} so'm</div>
+                <div><strong>Komissiya:</strong> ${commission.toFixed(2)} so'm</div>
+                <div><strong>Umumiy summa:</strong> ${totalAmount.toFixed(2)} so'm</div>
+            `;
+
+            document.getElementById('transactionDetails').innerHTML = transactionDetails;
+            document.getElementById('result').style.display = 'block';
+        });
+
+        document.getElementById('confirmBtn').addEventListener('click', function() {
+            window.location.href = "http://127.0.0.1:8000/order/success/display/";
+        });
+    </script>
+
+</body>
+</html>

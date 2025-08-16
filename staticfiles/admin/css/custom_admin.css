@@ -1,0 +1,28 @@
+#changelist-form .results {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+#changelist-form .results table {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+#changelist-form .results tbody tr {
+    width: 200px;
+    height: 250px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    background: white;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#changelist-form .results td {
+    display: block;
+    width: 100%;
+    text-align: center;
+}

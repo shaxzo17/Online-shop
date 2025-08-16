@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyurtma berish</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #ffeef5; /* pushti fon */
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #d63384;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-control, .form-check-input {
+            border-radius: 10px;
+        }
+        .btn-pink {
+            background-color: #d63384;
+            border: none;
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            width: 100%;
+            transition: 0.3s;
+        }
+        .btn-pink:hover {
+            background-color: #c21870;
+            transform: translateY(-2px);
+        }
+        .form-check-label {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2>🛍 Buyurtma berish</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- Manzil kiritish -->
+        <div class="form-group">
+            <label for="address">📍 Manzil:</label>
+            <input type="text" name="address" id="address" class="form-control" placeholder="Manzilingizni kiriting" required>
+        </div>
+
+        <!-- To'lov turi -->
+        <div class="form-group">
+            <h5 class="mb-3">💳 To'lov turi:</h5>
+            <div class="form-check mb-2">
+                <input type="radio" name="payment_method" value="cash" id="cash" class="form-check-input" required>
+                <label for="cash" class="form-check-label">Naqd to'lov</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" name="payment_method" value="card" id="card" class="form-check-input">
+                <label for="card" class="form-check-label">Karta orqali to'lov</label>
+            </div>
+        </div>
+
+        <!-- Tasdiqlash tugmasi -->
+        <button type="submit" class="btn btn-pink mt-3">✅ Buyurtmani tasdiqlash</button>
+    </form>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

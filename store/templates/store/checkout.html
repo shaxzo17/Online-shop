@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Buyurtmani rasmiylashtirish</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-pink-50 min-h-screen flex items-center justify-center">
+    <div class="w-full max-w-lg bg-white rounded-2xl shadow-xl p-8">
+        <h2 class="text-3xl font-bold text-center mb-8 text-pink-600 flex items-center justify-center gap-2">
+            🛒 Buyurtmani rasmiylashtirish
+        </h2>
+
+        <form id="checkoutForm" method="POST" action="{% url 'store:checkout' %}" class="space-y-6">
+            {% csrf_token %}
+
+            <div>
+                <label for="address" class="block font-medium mb-2">Manzil</label>
+                <input type="text" id="address" name="address" required
+                       class="w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400">
+            </div>
+
+            <div>
+                <label for="first_name" class="block font-medium mb-2">Ism</label>
+                <input type="text" id="first_name" name="first_name" required
+                       class="w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400">
+            </div>
+
+            <div>
+                <label for="last_name" class="block font-medium mb-2">Familya</label>
+                <input type="text" id="last_name" name="last_name" required
+                       class="w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400">
+            </div>
+
+            <div>
+                <label for="phone" class="block font-medium mb-2">Telefon raqam</label>
+                <input type="tel" id="phone" name="phone" required
+                       class="w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400">
+            </div>
+
+            <div>
+                <label for="payment" class="block font-medium mb-2">To'lov turini tanlang</label>
+                <select id="payment" name="payment" required
+                        class="w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400">
+                    <option value="naqd">Naqd</option>
+                    <option value="plastik">Plastik karta</option>
+                </select>
+            </div>
+
+            <button type="submit"
+                    class="w-full py-3 bg-pink-500 hover:bg-pink-600 text-white text-lg font-semibold rounded-xl transition transform hover:-translate-y-1">
+                ✅ Buyurtmani yuborish
+            </button>
+        </form>
+    </div>
+</body>
+</html>

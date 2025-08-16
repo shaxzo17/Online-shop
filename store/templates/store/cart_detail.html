@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Savat</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-pink-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center mb-10 text-pink-600">🛒 Savatdagi Mahsulotlar</h1>
+
+        {% if cart_items %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {% for item in cart_items %}
+                    <div class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-transform transform hover:-translate-y-2">
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-full h-48 object-cover">
+                        <div class="p-5">
+                            <h2 class="text-xl font-bold mb-2 text-gray-800">{{ item.product.name }}</h2>
+                            <p class="text-gray-600 text-sm mb-2">{{ item.product.description|truncatechars:60 }}</p>
+                            <p class="text-lg font-bold text-pink-600 mb-2">{{ item.product.price }} so‘m</p>
+                            <p class="text-sm text-gray-600 mb-2">Miqdori: {{ item.quantity }}</p>
+                            <p class="text-md font-semibold text-pink-700 mb-4">Jami: {{ item.subtotal }} so‘m</p>
+
+                            <!-- Miqdorini yangilash -->
+                            <form method="post" action="{% url 'store:update_cart' item.product.id %}">
+                                {% csrf_token %}
+                                <div class="flex items-center mb-4">
+                                    <label for="quantity_{{ item.product.id }}" class="text-sm mr-2">Miqdor:</label>
+                                    <input type="number" name="quantity" id="quantity_{{ item.product.id }}" value="{{ item.quantity }}" min="1" class="w-16 text-center rounded-lg border-pink-400 border focus:ring-pink-400">
+                                </div>
+                                <button type="submit" class="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-xl w-full transition">
+                                    🔄 Yangilash
+                                </button>
+                            </form>
+
+                            <!-- O'chirish -->
+                            <form method="post" action="{% url 'store:remove_from_cart' item.product.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl w-full mt-4 transition">
+                                    ❌ Savatdan o‘chirish
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Jami narx va harakatlar -->
+            <div class="mt-10 p-6 bg-white rounded-2xl shadow-md">
+                <h3 class="text-2xl font-bold mb-4 text-gray-800">Umumiy narx: <span class="text-pink-600">{{ total }} so‘m</span></h3>
+                <div class="flex justify-between gap-4 flex-col sm:flex-row">
+                    <a href="/categories/" class="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-lg text-xl text-center w-full transition">
+                        🔙 Kategoriyalarga qaytish
+                    </a>
+                    <a href="{% url 'store:checkout' %}" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg text-xl text-center w-full transition">
+                        ✅ Buyurtma berish
+                    </a>
+                </div>
+            </div>
+
+        {% else %}
+            <p class="text-center text-2xl mt-10 text-gray-600">🛒 Savat bo‘sh!</p>
+            <div class="text-center mt-6">
+                <a href="/categories/" class="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-full text-lg transition">
+                    🔍 Mahsulotlar sahifasiga qaytish
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

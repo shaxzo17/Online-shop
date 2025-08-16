@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kategoriyalar 🎀</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #fff0f6, #ffe6f0);
+      font-family: 'Poppins', sans-serif;
+    }
+    .bow {
+      animation: float 6s ease-in-out infinite;
+      filter: drop-shadow(0 5px 10px rgba(255,105,180,0.3));
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(2deg); }
+    }
+    /* Confetti */
+    .confetti {
+      position: fixed;
+      pointer-events: none;
+      z-index: 50;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Header -->
+  <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 mt-4 flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+    <div class="flex items-center gap-2 text-3xl font-bold text-pink-600">
+      🎀 Onlayn Shop
+    </div>
+
+    <!-- Qidiruv -->
+    <form method="get" action="" class="flex w-full md:w-2/3">
+      <input type="text" name="q" placeholder="Mahsulot nomi bo‘yicha qidiring..."
+             value="{{ request.GET.q }}"
+             class="w-full border border-pink-200 px-4 py-2 rounded-l-xl focus:outline-none focus:ring-2 focus:ring-pink-400">
+      <button type="submit"
+              class="bg-pink-500 text-white px-4 py-2 rounded-r-xl hover:bg-pink-600 transition duration-300">
+        Qidirish
+      </button>
+    </form>
+
+    <!-- Savat -->
+    <a href="{% url 'store:cart_detail' %}"
+       class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-xl shadow-md transition duration-300">
+      🛒 Savat
+    </a>
+  </div>
+
+  <!-- Butterfly dekorlar -->
+  <div class="absolute top-10 left-6 bow">
+    🎀
+  </div>
+  <div class="absolute bottom-16 right-10 bow">
+    🎀
+  </div>
+
+  <!-- Asosiy container -->
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-center mb-8 text-pink-700">Kategoriyalar</h1>
+
+    <div class="flex flex-col lg:flex-row gap-6">
+      <!-- Kategoriyalar -->
+      <div class="lg:w-1/4 bg-white p-4 rounded-xl shadow">
+        <h2 class="text-2xl font-semibold mb-4 text-pink-600">Kategoriyalar 🎀</h2>
+        <ul class="space-y-2">
+          {% for category in categories %}
+            <li>
+              <a href="{% url 'store:category_detail' category.id %}"
+                 class="block px-3 py-2 rounded-lg hover:bg-pink-100 text-gray-700 hover:text-pink-700">
+                 {{ category.name }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- Mahsulotlar -->
+      <div class="lg:w-3/4">
+        <h2 class="text-2xl font-semibold mb-4 text-pink-600">Mahsulotlar</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {% for product in products %}
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition">
+              {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-48 object-cover">
+              {% else %}
+                <div class="bg-pink-100 w-full h-48 flex items-center justify-center text-pink-400">
+                  🎀 Rasm mavjud emas
+                </div>
+              {% endif %}
+              <div class="p-4">
+                <h3 class="text-xl font-semibold mb-2 text-pink-700">{{ product.name }}</h3>
+                <p class="text-gray-600 text-sm mb-2">{{ product.description|truncatechars:60 }}</p>
+                <p class="text-lg font-bold text-pink-600 mb-4">{{ product.price }} so‘m</p>
+
+                <form method="post" action="{% url 'store:add_to_cart' product.id %}">
+                  {% csrf_token %}
+                  <button type="submit"
+                          class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-xl w-full transition">
+                    Savatchaga qo‘shish
+                  </button>
+                </form>
+              </div>
+            </div>
+          {% empty %}
+            <p class="text-gray-500">Hech qanday mahsulot mavjud emas.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Bosh sahifaga qaytish -->
+    <a href="{% url 'store:home' %}"
+       class="block text-center text-pink-600 mt-10 hover:underline">⬅️ Bosh sahifaga qaytish</a>
+  </div>
+
+  <script>
+    // Savatchaga qo‘shilganda konfetti 🎉
+    document.querySelectorAll('form button').forEach(btn => {
+      btn.addEventListener('click', e => {
+        const rect = btn.getBoundingClientRect();
+        confetti(rect.left + rect.width/2, rect.top + window.scrollY);
+      });
+    });
+
+    function confetti(x, y){
+      for(let i=0;i<15;i++){
+        const s = document.createElement('span');
+        s.className='confetti';
+        s.style.left=x+'px'; s.style.top=y+'px';
+        s.style.width=s.style.height=Math.random()*6+4+'px';
+        s.style.background=['#ff6aa8','#ff8fba','#ffcfe1','#ffe6f0'][Math.floor(Math.random()*4)];
+        s.style.borderRadius='50%';
+        s.style.transform=`translate(${(Math.random()-0.5)*120}px, ${(Math.random()-0.5)*160}px) rotate(${Math.random()*360}deg)`;
+        s.style.transition='all 1s ease-out'; s.style.opacity='1';
+        document.body.appendChild(s);
+        requestAnimationFrame(()=>{ s.style.opacity='0'; });
+        setTimeout(()=>s.remove(), 1000);
+      }
+    }
+  </script>
+</body>
+</html>
