@@ -1,18 +1,85 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="uz">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pul O'tkazma Sayti</title>
     <link rel="stylesheet" href="{% static 'store/style.css' %}">
     <style>
-        #transactionDetails {
+        body {
+            background: linear-gradient(135deg, #ffe6f2, #e6ffe6);
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .form-container {
+            width: 100%;
+            max-width: 600px;
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            animation: fadeIn 0.8s ease;
+        }
+        h1 {
+            text-align: center;
+            color: #e83e8c;
+            margin-bottom: 25px;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 15px;
+            display: block;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 6px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        input:focus {
+            border-color: #e83e8c;
+            outline: none;
+            box-shadow: 0 0 5px rgba(232, 62, 140, 0.4);
+        }
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 14px;
+            background: #e83e8c;
+            border: none;
+            color: #fff;
             font-size: 18px;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #d63384;
+        }
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            animation: slideUp 0.6s ease;
+        }
+        #transactionDetails {
+            font-size: 16px;
             line-height: 1.6;
+            text-align: left;
         }
         .big-amount {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: bold;
             margin: 10px 0;
             color: green;
@@ -20,36 +87,52 @@
         .success-text {
             color: green;
             font-weight: bold;
+            margin-top: 10px;
+        }
+        #confirmBtn {
+            background: #28a745;
+            margin-top: 20px;
+        }
+        #confirmBtn:hover {
+            background: #218838;
+        }
+        @keyframes fadeIn {
+            from {opacity: 0; transform: scale(0.95);}
+            to {opacity: 1; transform: scale(1);}
+        }
+        @keyframes slideUp {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
         }
     </style>
 </head>
 <body>
 
     <div class="form-container">
-        <h1>Pul O'tkazish</h1>
+        <h1>💸 Pul O'tkazish</h1>
         <form id="transferForm">
-            <label for="senderCard">Pul o'tkazmoqchi bo'lgan karta raqami:</label>
+            <label for="senderCard">Yuboruvchi karta raqami:</label>
             <input type="text" id="senderCard" name="senderCard" required maxlength="19" placeholder="1234 5678 9012 3456" oninput="formatCardNumber(this)">
 
-            <label for="senderName">Yuboruvchi ismi, familiyasi, sharifi:</label>
-            <input type="text" id="senderName" name="senderName" required placeholder="Ismi Familiyasi Sharifi">
+            <label for="senderName">Yuboruvchi F.I.Sh:</label>
+            <input type="text" id="senderName" name="senderName" required placeholder="Ism Familiya Sharif">
 
             <label for="receiverCard">Qabul qiluvchi karta raqami:</label>
             <input type="text" id="receiverCard" name="receiverCard" required maxlength="19" placeholder="1234 5678 9012 3456" oninput="formatCardNumber(this)">
 
-            <label for="receiverName">Qabul qiluvchi ismi, familiyasi, sharifi:</label>
-            <input type="text" id="receiverName" name="receiverName" required placeholder="Ismi Familiyasi Sharifi">
+            <label for="receiverName">Qabul qiluvchi F.I.Sh:</label>
+            <input type="text" id="receiverName" name="receiverName" required placeholder="Ism Familiya Sharif">
 
-            <label for="amount">O'tkazmoqchi bo'lgan summa (so'm):</label>
+            <label for="amount">Summa (so'm):</label>
             <input type="number" id="amount" name="amount" required>
 
-            <button type="submit">O'tkazish</button>
+            <button type="submit">➡️ O'tkazish</button>
         </form>
 
-        <div id="result" class="result" style="display: none; margin-top: 20px;">
-            <h2>O'tkazma tafsilotlari</h2>
+        <div id="result" class="result" style="display: none;">
+            <h2>📋 O'tkazma tafsilotlari</h2>
             <p id="transactionDetails"></p>
-            <button id="confirmBtn" type="button">Buyurtmani tasdiqlash!</button>
+            <button id="confirmBtn" type="button">✅ Buyurtmani tasdiqlash</button>
         </div>
     </div>
 
@@ -84,7 +167,7 @@
             var transactionDetails = `
                 <div class="big-amount">${amount.toFixed(2)} so'm</div>
                 <div><strong>O'tkazilgan vaqti:</strong> ${formattedDate}</div>
-                <div class="success-text">Operatsiya bajarildi</div>
+                <div class="success-text">✅ Operatsiya bajarildi</div>
                 <hr>
                 <div><strong>Yuboruvchi karta:</strong> ${maskedSenderCard}</div>
                 <div><strong>Yuboruvchi:</strong> ${senderName}</div>

@@ -1,55 +1,86 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="uz">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <title>Buyurtma muvaffaqiyatli!</title>
     <style>
         body {
-            background-color: #e9ffe9;
+            background: linear-gradient(135deg, #ffe6f2, #fff);
             font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
         }
         .success-container {
-            max-width: 700px;
-            margin: 50px auto;
-            background-color: #ffffff;
+            max-width: 650px;
+            background-color: #fff;
             border-radius: 20px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-            padding: 40px 50px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            padding: 40px;
             text-align: center;
+            animation: fadeIn 1s ease;
         }
         h1 {
-            color: #28a745;
-            font-size: 34px;
+            color: #e83e8c;
+            font-size: 32px;
             margin-bottom: 20px;
+            animation: pop 0.6s ease;
         }
         .info {
             font-size: 18px;
-            margin-bottom: 15px;
-            color: #333;
+            margin: 8px 0;
+            color: #444;
         }
         .highlight {
             font-weight: bold;
+            color: #e83e8c;
         }
         .delivery {
-            margin-top: 30px;
+            margin-top: 25px;
             font-size: 20px;
-            color: #155724;
+            color: #28a745;
+            font-weight: bold;
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 25px;
+            background: #e83e8c;
+            color: #fff;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background: #d63384;
+        }
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+        @keyframes pop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
     </style>
 </head>
 <body>
     <div class="success-container">
-    
-        <h1 style="color: green;">✅ Buyurtmangiz qabul qilindi!</h1>
-        <p><strong>Buyurtma vaqti:</strong> {{ order_time }}</p>
-        
-        <h2><strong>Buyurtma qilgan ma'lumotlar:</strong></h2>
-        <p>Ism: {{ checkout_data.name }}</p>
-        <p>Telefon: {{ checkout_data.phone }}</p>
-        <p>Manzil: {{ checkout_data.address }}</p>
-        
-        <p>🛵 Buyurtmangiz 2-3 kun ichida kuryer orqali yetkaziladi!</p>
+        <h1>✅ Buyurtmangiz qabul qilindi!</h1>
+        <p class="info"><span class="highlight">Buyurtma vaqti:</span> {{ order_time }}</p>
+
+        <h2 class="highlight">Buyurtma ma'lumotlari:</h2>
+        <p class="info">👤 Ism: <span class="highlight">{{ checkout_data.name }}</span></p>
+        <p class="info">📞 Telefon: <span class="highlight">{{ checkout_data.phone }}</span></p>
+        <p class="info">📍 Manzil: <span class="highlight">{{ checkout_data.address }}</span></p>
+
+        <p class="delivery">🛵 Buyurtmangiz 2-3 kun ichida kuryer orqali yetkaziladi!</p>
+
+        <a href="/categories/" class="btn">⬅️ Asosiy sahifaga qaytish</a>
     </div>
 </body>
 </html>

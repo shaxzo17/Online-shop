@@ -6,8 +6,8 @@
     <title>Buyurtma Qabul Qilindi</title>
     <style>
         body {
-            background-color: #e6f4e6;
-            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ffe6f0, #ffd6e7, #ffcce0);
+            font-family: 'Segoe UI', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -15,46 +15,47 @@
             margin: 0;
         }
         .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.25);
             text-align: center;
-            width: 400px;
+            width: 420px;
+            animation: fadeIn 1.2s ease-in-out;
         }
         .success {
-            color: #28a745;
-            font-size: 24px;
+            color: #e91e63;
+            font-size: 26px;
             font-weight: bold;
+            margin-bottom: 20px;
         }
         .info {
-            margin-top: 20px;
+            margin-top: 10px;
             text-align: left;
+            background-color: #fff0f6;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #ffcce0;
+        }
+        .info h3 {
+            margin-bottom: 12px;
+            color: #d81b60;
         }
         .info label {
             display: block;
-            margin: 10px 0 5px;
-        }
-        .info input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            margin: 8px 0;
+            font-size: 15px;
+            color: #444;
         }
         .delivery {
-            color: #dc3545;
-            font-size: 14px;
-            margin-top: 20px;
+            color: #c2185b;
+            font-size: 15px;
+            margin-top: 25px;
+            font-weight: 500;
         }
-        .submit-btn {
-            background-color: #28a745;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
+        @keyframes fadeIn {
+            from {opacity: 0; transform: scale(0.9);}
+            to {opacity: 1; transform: scale(1);}
         }
     </style>
 </head>
@@ -65,17 +66,31 @@
         </div>
         <form class="info" action="/submit-checkout" method="POST">
             <h3>Buyurtma qilgan ma'lumotlar:</h3>
-            <label for="name">Ism:{{ name }}</label>
-
-            <label for="name">Familya:{{ last_name }}</label>
-            <label for="phone">Telefon:{{ phone }}</label>
-            
-            <label for="address">Manzil:{{ address }}</label>
-            
+            <label>👤 Ism: {{ name }}</label>
+            <label>👨‍👩‍👧 Familya: {{ last_name }}</label>
+            <label>📞 Telefon: {{ phone }}</label>
+            <label>🏠 Manzil: {{ address }}</label>
         </form>
         <div class="delivery">
             🚚 Buyurtmangiz 2-3 kun ichida kuryer orqali yetkaziladi!
         </div>
+        <p id="countdown" style="margin-top:15px; color:#e91e63; font-weight:bold;">
+            ⏳ 5 soniyadan keyin bosh sahifaga yo‘naltirilasiz...
+        </p>
     </div>
+
+    <script>
+        let seconds = 5;
+        const countdownEl = document.getElementById("countdown");
+
+        const timer = setInterval(() => {
+            seconds--;
+            countdownEl.textContent = `⏳ ${seconds} soniyadan keyin bosh sahifaga yo‘naltirilasiz...`;
+            if (seconds === 0) {
+                clearInterval(timer);
+                window.location.href = "/categories/";
+            }
+        }, 1000);
+    </script>
 </body>
 </html>
